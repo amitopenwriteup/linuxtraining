@@ -1,0 +1,17 @@
+Day 5:
+
+scp: Secure copy [Copy the file from one host to another host using ssh]
+
+Host 1 -->Both host has pem  key
+
+Host 2
+
+Login to the host1 using pem
+
+copy the host2 pem file
+
+Create a file which you want to copy
+
+
+ssh -i <host2 pem key>  <filename> host2username@host2ipname:/path/
+
