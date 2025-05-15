@@ -1,0 +1,472 @@
+m 
+ Linux Administration Training
+
+ssh based authentication:  https://stackoverflow.com/questions/66452084/ssh-authentication-process
+
+Lab1:
+    1) You should know the basic commands
+
+#How to create  a directory
+
+mkdir testing
+
+# How to go inside the directory
+
+cd testing
+
+#Create a empty file
+
+touch readme
+#See contents of file
+
+cat readme
+
+#List all file
+
+ls 
+
+ls -ltr
+
+ls -la
+
+# How to come out from directory
+
+cd ..
+
+#Help page of any command
+man cat
+man ls
+man mkdir
+----------------
+
+Selinux vs apparomor
+
+https://www.techtarget.com/searchdatacenter/tip/Compare-two-Linux-security-modules-SELinux-vs-AppArmor
+
+
+Lab
+ 
+#udpate the pacakge list
+
+sudo apt-get update
+
+#Install package
+sudo apt-get install apache2
+
+#remove the package
+sudo apt-get remove apache2
+
+#Redhat/centos linux dnf
+
+Lab 4:
+
+sudo adduser training
+
+#It will prompt for password.. provide any passowrd
+
+#Login to the user
+su training
+
+#try below activty
+sudo apt-get update
+
+#It will give an error
+
+training is not in the sudoers file
+
+--------------------
+
+Lab 5:
+    
+https://github.com/ 
+
+#Press i <insert mode>
+
+training  ALL=(ALL:ALL) ALL
+
+#You need to press esc+:+wq+! (escape colon wq !)
+
+#Now test
+su training
+sudo apt-get update
+
+------------------
+Day2:  07/05/25
+
+lab 1:
+    
+    https://www.redhat.com/en/blog/introduction-vi-editor
+1) If i want to open a file using vi:[ If file is there, it will open that one, or else it will create new file
+
+vi testfile.sh
+
+2) If you want add something, you will enable the insert mode by pressing "i"
+
+3) Then if you want to save it, come out from the insert mode by pressing: esc
+
+4) If you want to save file  :wq+enter
+
+5) If you don't want to save file :q!
+    
+
+Lab2:
+
+1) vi test.sh
+2) Insert mode using "i"
+3) type the below code
+
+#!/bin/bash
+ls /tmp
+date
+echo "Hi i am amit"
+
+4) Save it esc+:+wq
+
+5)
+chmod +x test.sh
+6)
+./test.sh
+bash test.sh
+
+#!/bin/bash
+package="apache2"
+echo -n "Do you want to install the package?(y/n):"
+read answer
+if[ "$answer" == "y" ]; the
+        sudo apt-get update
+        sudo apt-get -y $package
+eles
+    echo "not installing"
+fi
+
+---------------------------
+Lab2
+
+mkdir gitlearning
+cd gitlearning
+git --version
+git status
+git init
+git status
+
+---------
+Lab3
+
+setup your username and email id
+
+ git config --global user.name amit
+ git config --global user.email amit@ow.com
+ 
+touch test.sh
+git status
+git add test.sh
+git status
+ git commit -m "firstcommit"
+ git log
+ git status
+ 
+
+
+ Lab link:https://www.openwriteup.com/?page_id=1075
+ 
+ 09/05
+ 
+Sure! Here's a cleaned-up version of the Git Bash steps, using an RSA SSH key instead of ed25519 and with no emojis or custom icons.
+
+Git Bash Steps to Generate RSA Key and Upload to GitHub
+1. Generate an RSA SSH Key
+Open Git Bash and run:
+ssh-keygen -trsa -b 4096 -C "your_email@example.com"
+ 
+Press     Enter to accept the default file location: ~/.ssh/id_rsa 
+Enter     a passphrase (optional)
+Then display and copy the public key:
+cat ~/.ssh/id_rsa.pub
+2. Add SSH Key to GitHub
+ 
+Go     to https://github.com 
+Click     your profile photo, then Settings 
+Go     to SSH and GPG keys 
+Click     New SSH key 
+Paste     the copied public key 
+Click     Add SSH key 
+3. Create a Repository on GitHub
+ 
+Choose     Public or Private 
+Leave     "Initialize this repository with a README" unchecked 
+Click     Create repository
+4. Set Up Local Repository with Git Bash
+cd /path/to/your/projects
+
+Visit     https://github.com/new 
+Enter     the repository name, e.g., my-first-repo mkdir my-first-repo
+cd my-first-repo
+ 
+git init
+touch README.md
+git add README.md
+git commit -m "Initial commit"
+5. Connect to GitHub and Push
+Replace your-username with your actual GitHub username:
+git remote add origin git@github.com:your-username/my-first-repo.git
+git push -u origin master
+If your GitHub repository defaults to the main branch instead of master, use:
+git branch -M main
+git push -u origin main
+
+ 
+ 
+ 1. L1 - In EC2 Ubuntu Instance Create a new user
+and SSH Key pair with an authorized key
+
+https://usercontent.one/wp/www.openwriteup.com/wp-content/uploads/2023/09/aws-instance-1.pdf?media=1728024675
+
+2. L2 - As a Linux root user Create Files/Directory
+in the same Instance and change the ownership to
+a new user
+1. Create a New User
+useradd newuser
+passwd newuser
+
+2. Create Files and Directories as root
+mkdir /opt/mydir
+touch /opt/mydir/file1.txt /opt/mydir/file2.txt
+
+3. Change Ownership to the New User
+chown -R newuser:newuser /opt/mydir
+The -R option applies the change recursively to all contents.
+
+4. Verify Ownership
+ls -l /opt/mydir
+Expected output:
+-rw-r--r-- 1 newuser newuser 0 May  9 12:00 file1.txt
+-rw-r--r-- 1 newuser newuser 0 May  9 12:00 file2.txt
+
+
+3. L3 - In EC2 Ubuntu Instance Create Files and
+Directories and Grand R/W/X Access only to the
+Owner and User Group
+
+Task: Create Files and Directories on EC2 Ubuntu, Set Permissions for Owner and Group Only
+1. SSH into Your EC2 Ubuntu Instance
+ssh -i /path/to/your-key.pem ubuntu@your-ec2-public-dns
+2. Create a Directory and Files
+mkdir /home/ubuntu/projectL3
+cd /home/ubuntu/projectL3
+ 
+# Create sample files
+touch file1.txt file2.txt
+ 
+# Optional: Create a subdirectory
+mkdir subdir
+3. Create or Use a User Group
+Create a new group (or use an existing one):
+sudo groupadd projectgroup
+Add current user (ubuntu) to the group:
+sudo usermod -aG projectgroup ubuntu
+You may need to log out and back in for group changes to take effect.
+4. Change Group Ownership
+sudo chgrp -R projectgroup /home/ubuntu/projectL3
+5. Set Permissions: R/W/X for Owner and Group Only
+chmod -R 770 /home/ubuntu/projectL3
+Explanation of 770:
+ 
+Owner:     read (r), write (w), execute (x) 
+Group:     read (r), write (w), execute (x) 
+Others:     no access (---)
+6. Verify Permissions
+ls -l /home/ubuntu/projectL3
+You should see something like:
+-rwxrwx--- 1 ubuntu projectgroup 0 May 9 12:00 file1.txt
+-rwxrwx--- 1 ubuntu projectgroup 0 May 9 12:00 file2.txt
+ 
+
+4. L4 - In EC2 Ubuntu Instance install JDK and
+
+sudo apt update
+
+setup JAVA_HOME path environment variable
+
+sudo apt install -y openjdk-17-jdk
+
+
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+
+5. L5 - Create two AWS EC2 Ubuntu Instances to
+establish SSH Connection and SCP the files from
+one Instance to another instance
+
+
+6. L6 - Write a Linux Shell Script to Install Git, JDK,
+Maven in EC2 Ubuntu Instance
+#!/bin/bash
+sudo apt-get install git
+sudo apt-get install openjdk-17
+
+ 13/05
+
+Assignment
+
+
+
+cicd-->scm
+
+-- Create a directory
+sudo su
+mkdir testrepo
+-- Convert that directory into git repo
+cd testrepo
+git init
+-- Create a file
+touch readme
+-- add and commit the file
+git config --global user.name=amit
+git config --global user.email=a@ow.com
+git add .
+git commit -m "add"
+ssh-keygen -t rsa
+cat /root/.ssh/id_rsa.pub
+
+-- Create a remote GitHub repo 
+Login to git and create repo
+
+-- Copy the public key from linux box  (cat command) and paste in github
+
+-- Using ssh you need to push code
+in your repo click on ssh type and take last three lines
+
+-- Push your code
+Copy and paste the last three lines and code will be pushed
+
+
+Scp https://builtin.com/articles/scp-command
+
+-- AWs codebuild 
+ 
+---
+version: 0.2
+phases:
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker build -t $IMAGE_NAME .
+artifacts:
+  files:
+    - "**/*"
+  discard-paths: yes
+env:
+  variables:
+    IMAGE_NAME: flask-app
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------
+
+
+
+
+
+
+
+
+
+
+
