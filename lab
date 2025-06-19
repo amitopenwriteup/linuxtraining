@@ -1,0 +1,604 @@
+ +
+             +Lab 1:
+    
+Create ec2 vm and connect using ssh
+
+Lab 2:
+
+hostname
+hostname -i
+cat  /etc/lsb-release
+ip addr
+whoami
+uname -a
+
+Lab 3:
+Directory command
+#Create directory
+mkdir test
+#Change directory
+cd test
+#list direcotry command
+ls
+ls -ltr
+#hidden file
+ls -la
+#Come out from directory
+cd ..
+#Check the current directory
+pwd
+#Trigger command for other 
+ls /etc
+#Check system time
+date
+#Read a file 
+cat /etc/sudoers
+#Read log file
+cat /etc/sudoers
+#live logs 
+tail -f /var/log/dmesg
+
+#in linux
+ctrl+c
+#help page
+man ls
+man pwd
+man tail
+
+Lab4
+
+sudo cat /etc/sudoers
+#login as superuser
+sudo su
+#Add 
+adduser training
+#It will prompt for password and info
+#login as that user
+su training
+sudo cat /etc/sudoers
+exit
+exit
+
+#delete the user
+Sudo deluser amit
+#Check all the user
+
+sudo cat /etc/passwd
+
+
+LAb 5
+
+touch sample.txt # Create a file
+echo "Hello World" > sample.txt
+cat sample.txt
+head -n 1 sample.txt
+tail -n 1 sample.txt
+
+Lab 6 
+### 3. File Management
+mkdir testdir
+#copy the file
+cp sample.txt testdir/
+#renaming the file or moving the file
+mv testdir/sample.txt testdir/sample-renamed.txt
+#removing the file
+rm testdir/sample-renamed.txt
+#remvoing the directory
+rm testdir/sample-renamed.txt
+
+Lab 7
+
+### 4. File Permissions
+touch myfile
+chmod 744 myfile # Set file permissions
+ls -l myfile
+chown $USER myfile # Change ownership
+### 5. Searching Files and Text
+grep root /etc/passwd # Search for 'root' in file
+find /etc --name passwd # Find file named passwd
+### 6. System Information
+top -b -n1 | head -n 10 # View CPU usage
+free -h # Show memory usage
+uptime # System uptime
+df -h # Disk usage
+du -sh * # Disk usage by folder 
+
+
+---------------
+grep command
+
+1) grep command
+grep -r root /etc/
+grep root /etc/passwd
+
+grep -i root /etc/passwd
+
+grep -i Root /etc/passwd
+
+grep -n root /etc/passwd
+
+grep -irn root /etc
+
+-----------
+find /etc -name passwdfind -
+
+find /etc -name *.allow
+
+find /etc -iname pAsswd
+
+find /var/log/ -iname dmesg
+
+find /etc -type d
+--------------------
+
+touch dep.yaml
+
+ls -l dep.
+chmod 400 dep.yaml
+chmod 644 dep.yaml
+chmod 777 dep.yaml
+
+-------------------
+chown
+chown ubuntu dep.yaml
+chown ubuntu:ubuntu dep.yaml
+chown amit dep.yaml
+
+
+-------------
+sudo du /etc
+sudo du -h /etc
+sudo du -sh /etc
+
+du -sh /home/ubuntu
+
+sudo df -h
+
+------------------
+
+sudo su
+
+
+-------------------------------------
+
+09/06
+
+Lab1
+
+open a file using vi editor:
+    
+vi test
+
+To go in insert mode press i
+
+Then type following
+
+Line1
+Line2
+Line3
+
+Go to the normal mode while press esc key
+
+To save and exit from the file you will press :wq
+
+
+Lab2: Don;t want to save the latest change
+
+vi test
+
+Press "i" to enable the insert mode
+
+Add few line
+
+Line1
+Line2                                                                                                                                                                                         
+Line3
+
+Line4
+Line5   
+I don't want save latest changes
+
+esc :q!
+
+
+Lab3:
+    
+
+sudo vi /etc/sudoers
+
+Press "i" ,and type below new line
+
+# new code
+
+Try to save that file esc+:wq
+
+it will give a error read only file,
+
+When you want to override readonly file
+
+esc+:wq!
+
+Lab4
+
+vi test
+
+Line1
+Line2
+Line3
+
+COpy the line3, take the cursor to that line using keyboard, then press"yy"
+
+whereever you want to paste, press "p"
+
+esc+ :wq
+
+vi test
+
+Line1
+Line2
+Line3
+
+Cut the line3, take the cursor to that line using keyboard, then press"dd"
+
+whereever you want to paste, press "p"
+
+esc+:wq
+
+
+Lab 5
+
+
+sudo apt update
+
+sudo yum update
+
+sudo dnf update
+
+you want to install java
+
+sudo apt-get install openjdk-17-jdk
+
+sudo yum install openjdk-17-jdk
+
+sudo dnf instalal openjdk-17-jdk
+
+Lab 6:
+
+Install this package "docker-ce"
+
+ You can use a shebang to tell Linux which interpreter is needed to run the script
+
+
+Lab 7:
+    
+vi test.sh
+
+ls
+date
+apt-g
+et update
+save the file esc+:wq
+
+./test.sh
+
+It will give error, read write but no excute writes
+
+chmod +x test.sh
+
+ls -l test.sh
+
+./test.sh
+
+--------------------------------------------------
+
+
+Go and write the script to install  vim
+
+#!/bin/bash
+sudo apt-get update
+sudo apt-get install vim -y
+
+Write a shell script to find a file "passwd" in /etc directory
+
+vi filesearch.sh 
+Press i to enable insert mode
+Copy and  paste two line code below mentioned
+#!/bin/bash
+find /etc/ -name passwd
+save file  esc :wq
+chmod for execution rithts
+ chmod +x vim.sh
+./vim.sh
+
+-------------------
+Write a code to find the error message in /var/log
+
+#!/bin/bash
+grep -ir error /var/log
+
+----------------------------------
+11/06
+
+Lab1: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/linux-file-transfer-scp.html
+
+
+LAb2
+
+dpkg -s apache2
+dpkg -s apache2 &> /dev/null
+echo $?
+
+
+vi test.sh
+#Copy the below code
+chmod +x
+
+    fi
+fi
+
+#Save the code
+
+chmod +x test.sh
+./test.sh
+dpkg -s apache2
+dpkg -s apache2 &> /dev/null
+echo $?
+
+
+Lab3:
+vi checkpack.sh
+#!/bin/bash
+
+# Function to check and install a package
+install_package() {
+    local package_name=$1
+
+    if dpkg -s "$package_name" &> /dev/null; then
+        echo "$package_name is already installed. ✅ Success"
+    else
+        echo "$package_name not found. Installing..."
+        sudo apt update && sudo apt install -y "$package_name"
+        if [ $? -eq 0 ]; then
+            echo "$package_name installed successfully. ✅ Success"
+        else
+            echo "$package_name installation failed. ❌"
+        fi
+    fi
+}
+
+# Ask user for package name
+read -p "Enter the package name you want to install: " pkg
+install_package "$pkg"
+
+
+chmod +x checkpack.sh
+
+./checkpack.sh
+
+
+Lab 4
+
+#!/bin/bash
+
+# Function 1: Check if the package is already installed
+is_installed() {
+    local package=$
+
+1
+    dpkg -s "$package" &> /dev/null
+    return $?
+}
+
+# Function 2: Check if the package is available in the remote apt repository
+is_installed() {
+    local package=$1
+    dpkg -s "$package" &> /dev/null
+    return $?
+}
+
+
+# Function 3: Install the package if not installed and available
+install_package() {
+    local package=$1
+
+    if is_installed "$package"; then
+        echo "$package is already installed. ✅"
+    else
+        echo "$package is not installed. Checking availability in the repo..."
+        if is_available_in_repo "$package"; then
+            echo "$package is available. Installing..."
+            sudo apt update && sudo apt install -y "$package"
+            if [ $? -eq 0 ]; then
+                echo "$package installed successfully. ✅"
+            else
+                   echo "Failed to install $package. ❌"
+            fi
+        else
+            echo "$package is not available in the repository. ❌"
+        fi
+    fi
+}
+
+# Read multiple package names from user (space-separated)
+read -p "Enter package names (space-separated): " -a packages
+
+# Loop through all provided package names
+for pkg in "${packages[@]}"; do
+    echo "-----------------------------"
+    echo "Processing: $pkg"
+    install_package "$pkg"
+    echo "-----------------------------"
+done
+
+
+-------------------------------------------------------------
+12/06
+Lab1
+1) 
+git --version
+mkdir test
+cd test
+git status
+#It will give error not a git repository
+ls -la
+#check any .git subdirectory is there or not
+git init
+ls -la
+git status
+#Check error message not a git diretory is coming or not
+
+---------------------------
+Lab2:
+git config --global user.name  "Your Name"
+git config --global user.name "yourname@example.com"
+---------------------
+Lab3:
+touch code
+git status
+#Untracked file
+git add code
+git status
+#Changes to comitted message come
+touch code1
+git add code1
+git status
+-----------------------------------
+Lab 4:
+
+git commit -m "addingcode"
+git status
+git log
+git reflog
+git show <commit id from reflog>
+example
+git show 48010e2
+
+https://www.openwriteup.com/?page_id=1075
+https://www.openwriteup.com/?page_id=1081
+
+-------------------------------------------------
+
+Lab 5
+
+vi code
+#!/bin/bash
+date
+
+Save the file
+
+git add code
+git commit -m "changing"
+git status
+git log
+git reflog
+git diff <id1> <id2>
+#example
+ git diff 693431c a96635b
+
+
+---
+ssh-keygen -t rsa
+
+cat  /home/ubuntu/.ssh/id_rsa.pub
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+16/06
+#How to initate the git repo
+mkdir test
+cd test
+git status
+git init
+cd ..
+#If you are goin
+git statusg outside from that directory, you are going out of scope 
+git status
+cd test
+--------------------
+Lab2
+git config --global user.name amit
+git config --global user.email amit@ow.com
+git config --global --list
+touch codefile
+git add codefile
+git status
+git commit -m "adding"
+git log
+git reflog
+---------------------------
+git reflog
+git show commitid
+#for example
+                    
+
+-------------------------
+vi codefile
+#!/bin/bash
+echo "hell"
+
+git add .
+git commit -m "add"
+git reflog
+
+--------------------
+Lab 4
+cat .git/configg
+#Copy the git remote command from github.com
+git remote add origin url
+cat .git/config
+
+git branch
+git branch -M main
+git branch
+
+------------------
+git push -u origin main
+
+
+ssh-keygen -t rsa
+
+cat  /home/ubuntu/.ssh/id_rsa.pub
+
+-----------------
+Try this
+
+pwd
+touch newcode
+mkdir newdir
+touch newdir/file
+git add .
+git commit -m "changes done"
+git push -u origin main
+
+#Check your github repo
+git log
+git status
+git reflog
+
+
+
+
+
+
+--------------
+
+18/06
+
+
+git clone https://github.com/amitopenwriteup/java11-examples.git
+
+#Downloading the latest package defination
+
+sudo apt-get update
+
+#Installing the java
+
+sudo apt-get install openjdk-17-jdk -y
+
+#Install maven
+sudo apt-get install maven -y
+
+cd java11-examples
+mvn clean package
+#Check for jar file
+ls target/
