@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shell Scripting Basics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 1000px;
+            min-height: 550px;
+            padding: 50px;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #2193b0;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #2193b0;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #6dd5ed;
+            font-size: 1.5em;
+            margin: 20px 0 10px 0;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .code-box {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-left: 4px solid #2193b0;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-box .comment {
+            color: #6a9955;
+        }
+
+        .code-box .keyword {
+            color: #569cd6;
+        }
+
+        .code-box .string {
+            color: #ce9178;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background: #2193b0;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #1a7a8f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #2193b0;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        ul {
+            margin: 20px 0 20px 30px;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .grid-item {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #2193b0;
+        }
+
+        .emoji {
+            font-size: 1.3em;
+            margin-right: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #2193b0;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter">
+            <span id="current">1</span> / <span id="total">10</span>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <h1>🐚 Shell Scripting Basics</h1>
+            <p style="font-size: 1.5em; margin-top: 40px;">Automate Your Tasks with Bash</p>
+            <div style="margin-top: 60px;">
+                <p><span class="emoji">📝</span> Write once, run many times</p>
+                <p><span class="emoji">⚡</span> Automate repetitive tasks</p>
+                <p><span class="emoji">🔧</span> Control your system with code</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: What is a Shell Script? -->
+        <div class="slide">
+            <h2>🤔 What is a Shell Script?</h2>
+            <p>A shell script is a text file containing a series of commands that the shell executes line by line.</p>
+            
+            <div class="info-box">
+                <p><strong>Think of it as a recipe:</strong></p>
+                <p>Just like a recipe has steps to make a dish, a shell script has commands to complete a task!</p>
+            </div>
+
+            <h3>Why use shell scripts?</h3>
+            <ul>
+                <li>Automate repetitive tasks</li>
+                <li>Save time and reduce errors</li>
+                <li>Schedule tasks to run automatically</li>
+                <li>Combine multiple commands into one</li>
+            </ul>
+        </div>
+
+        <!-- Slide 3: Your First Script -->
+        <div class="slide">
+            <h2>✨ Your First Shell Script</h2>
+            
+            <h3>Step 1: Create the file</h3>
+            <div class="code-box">
+nano hello.sh
+            </div>
+
+            <h3>Step 2: Write the script</h3>
+            <div class="code-box">
+<span class="comment">#!/bin/bash</span>
+<span class="comment"># This is my first shell script</span>
+
+<span class="keyword">echo</span> <span class="string">"Hello, World!"</span>
+<span class="keyword">echo</span> <span class="string">"Welcome to shell scripting!"</span>
+            </div>
+
+            <h3>Step 3: Make it executable</h3>
+            <div class="code-box">
+chmod +x hello.sh
+            </div>
+
+            <h3>Step 4: Run it</h3>
+            <div class="code-box">
+./hello.sh
+            </div>
+        </div>
+
+        <!-- Slide 4: The Shebang -->
+        <div class="slide">
+            <h2>🎯 The Shebang Line</h2>
+            
+            <div class="code-box">
+<span class="comment">#!/bin/bash</span>
+            </div>
+
+            <p>Every shell script starts with the <strong>shebang</strong> (#!)</p>
+
+            <div class="info-box">
+                <p><strong>What does it do?</strong></p>
+                <p>It tells the system which interpreter to use to run the script.</p>
+                <p><code>#!/bin/bash</code> means "use the Bash shell"</p>
+            </div>
+
+            <div class="warning-box">
+                <p><span class="emoji">⚠️</span> <strong>Important:</strong> The shebang must be the very first line of your script!</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Variables -->
+        <div class="slide">
+            <h2>📦 Variables</h2>
+            <p>Variables store data that you can use later in your script.</p>
+
+            <h3>Creating variables:</h3>
+            <div class="code-box">
+<span class="comment">#!/bin/bash</span>
+
+<span class="comment"># No spaces around the = sign!</span>
+name=<span class="string">"John"</span>
+age=25
+city=<span class="string">"New York"</span>
+
+<span class="comment"># Using variables (with $)</span>
+<span class="keyword">echo</span> <span class="string">"My name is $name"</span>
+<span class="keyword">echo</span> <span class="string">"I am $age years old"</span>
+<span class="keyword">echo</span> <span class="string">"I live in $city"</span>
+            </div>
+
+            <div class="warning-box">
+                <p><span class="emoji">❌</span> Wrong: <code>name = "John"</code> (spaces)</p>
+                <p><span class="emoji">✅</span> Correct: <code>name="John"</code> (no spaces)</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: User Input -->
+        <div class="slide">
+            <h2>💬 Getting User Input</h2>
+            <p>Use the <code>read</code> command to get input from users.</p>
+
+            <div class="code-box">
+<span class="comment">#!/bin/bash</span>
+
+<span class="keyword">echo</span> <span class="string">"What is your name?"</span>
+<span class="keyword">read</span> username
+
+<span class="keyword">echo</span> <span class="string">"What is your age?"</span>
+<span class="keyword">read</span> age
+
+<span class="keyword">echo</span> <span class="string">"Hello $username! You are $age years old."</span>
+            </div>
+
+            <h3>Reading with a prompt:</h3>
+            <div class="code-box">
+<span class="keyword">read</span> -p <span class="string">"Enter your name: "</span> name
+<span class="keyword">echo</span> <span class="string">"Hi, $name!"</span>
+            </div>
+        </div>
+
+        <!-- Slide 7: Conditionals (if-else) -->
+        <div class="slide">
+            <h2>🔀 Making Decisions (if-else)</h2>
+            
+            <div class="code-box">
+<span class="comment">#!/bin/bash</span>
+
+<span class="keyword">echo</span> <span class="string">"Enter a number:"</span>
+<span class="keyword">read</span> number
+
+<span class="keyword">if</span> [ $number -gt 10 ]; <span class="keyword">then</span>
+    <span class="keyword">echo</span> <span class="string">"Number is greater than 10"</span>
+<span class="keyword">elif</span> [ $number -eq 10 ]; <span class="keyword">then</span>
+    <span class="keyword">echo</span> <span class="string">"Number is equal to 10"</span>
+<span class="keyword">else</span>
+    <span class="keyword">echo</span> <span class="string">"Number is less than 10"</span>
+<span class="keyword">fi</span>
+            </div>
+
+            <h3>Comparison Operators:</h3>
+            <table>
+                <tr>
+                    <th>Operator</th>
+                    <th>Meaning</th>
+                </tr>
+                <tr>
+                    <td>-eq</td>
+                    <td>Equal to</td>
+                </tr>
+                <tr>
+                    <td>-ne</td>
+                    <td>Not equal to</td>
+                </tr>
+                <tr>
+                    <td>-gt</td>
+                    <td>Greater than</td>
+                </tr>
+                <tr>
+                    <td>-lt</td>
+                    <td>Less than</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Slide 8: Loops -->
+        <div class="slide">
+            <h2>🔁 Loops</h2>
+            
+            <h3>For Loop:</h3>
+            <div class="code-box">
+<span class="comment">#!/bin/bash</span>
+
+<span class="comment"># Print numbers 1 to 5</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> 1 2 3 4 5
+<span class="keyword">do</span>
+    <span class="keyword">echo</span> <span class="string">"Number: $i"</span>
+<span class="keyword">done</span>
+            </div>
+
+            <h3>While Loop:</h3>
+            <div class="code-box">
+<span class="comment">#!/bin/bash</span>
+
+counter=1
+<span class="keyword">while</span> [ $counter -le 5 ]
+<span class="keyword">do</span>
+    <span class="keyword">echo</span> <span class="string">"Count: $counter"</span>
+    counter=$((counter + 1))
+<span class="keyword">done</span>
+            </div>
+        </div>
+
+        <!-- Slide 9: Functions -->
+        <div class="slide">
+            <h2>🎪 Functions</h2>
+            <p>Functions let you reuse code and keep your scripts organized.</p>
+
+            <div class="code-box">
+<span class="comment">#!/bin/bash</span>
+
+<span class="comment"># Define a function</span>
+greet() {
+    <span class="keyword">echo</span> <span class="string">"Hello, $1!"</span>
+    <span class="keyword">echo</span> <span class="string">"Welcome to shell scripting!"</span>
+}
+
+<span class="comment"># Call the function</span>
+greet <span class="string">"Alice"</span>
+greet <span class="string">"Bob"</span>
+            </div>
+
+            <div class="info-box">
+                <p><strong>$1, $2, $3...</strong> are parameters passed to the function</p>
+                <p><strong>$1</strong> = first parameter</p>
+                <p><strong>$2</strong> = second parameter, and so on</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Practical Example -->
+        <div class="slide">
+            <h2>🎯 Practical Example: Backup Script</h2>
+            
+            <div class="code-box">
+<span class="comment">#!/bin/bash</span>
+
+<span class="comment"># Simple backup script</span>
+
+<span class="keyword">echo</span> <span class="string">"Starting backup..."</span>
+
+<span class="comment"># Variables</span>
+source_dir=<span class="string">"/home/user/documents"</span>
+backup_dir=<span class="string">"/home/user/backup"</span>
+date=$(date +%Y-%m-%d)
+
+<span class="comment"># Create backup directory if it doesn't exist</span>
+<span class="keyword">if</span> [ ! -d <span class="string">"$backup_dir"</span> ]; <span class="keyword">then</span>
+    mkdir -p <span class="string">"$backup_dir"</span>
+<span class="keyword">fi</span>
+
+<span class="comment"># Create backup</span>
+tar -czf <span class="string">"$backup_dir/backup-$date.tar.gz"</span> <span class="string">"$source_dir"</span>
+
+<span class="keyword">echo</span> <span class="string">"Backup completed: backup-$date.tar.gz"</span>
+            </div>
+
+            <div class="info-box">
+                <p><span class="emoji">💡</span> <strong>Tip:</strong> You can schedule this script to run automatically using cron!</p>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="controls">
+            <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+            <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('total').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            if (n >= totalSlides) currentSlide = totalSlides - 1;
+            if (n < 0) currentSlide = 0;
+            
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current').textContent = currentSlide + 1;
+            
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            showSlide(currentSlide);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

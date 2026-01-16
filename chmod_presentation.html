@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding chmod</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 900px;
+            min-height: 500px;
+            padding: 50px;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #764ba2;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .code-box {
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            border-radius: 5px;
+        }
+
+        .permission-table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+
+        .permission-table th,
+        .permission-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .permission-table th {
+            background: #667eea;
+            color: white;
+        }
+
+        .permission-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .visual-example {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #667eea;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        ul {
+            margin: 20px 0 20px 30px;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter">
+            <span id="current">1</span> / <span id="total">7</span>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <h1>📁 Understanding chmod</h1>
+            <p style="font-size: 1.5em; margin-top: 40px;">A Simple Guide to File Permissions in Linux/Unix</p>
+            <p style="margin-top: 60px; color: #666;">chmod lets you control who can read, write, or execute your files</p>
+        </div>
+
+        <!-- Slide 2: What is chmod? -->
+        <div class="slide">
+            <h2>🤔 What is chmod?</h2>
+            <p><span class="highlight">chmod</span> stands for "change mode"</p>
+            <p>It's a command that controls file permissions in Linux and Unix systems.</p>
+            <div class="visual-example">
+                <p style="font-size: 1.3em; margin-bottom: 15px;">Think of it like setting locks on a door:</p>
+                <p>🚪 Who can open it? (read)</p>
+                <p>✏️ Who can modify it? (write)</p>
+                <p>🏃 Who can use it? (execute)</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Three Permission Types -->
+        <div class="slide">
+            <h2>🔐 Three Permission Types</h2>
+            <table class="permission-table">
+                <tr>
+                    <th>Permission</th>
+                    <th>Symbol</th>
+                    <th>What it means</th>
+                </tr>
+                <tr>
+                    <td><span class="emoji">📖</span>Read</td>
+                    <td>r</td>
+                    <td>View the file contents</td>
+                </tr>
+                <tr>
+                    <td><span class="emoji">✍️</span>Write</td>
+                    <td>w</td>
+                    <td>Modify or delete the file</td>
+                </tr>
+                <tr>
+                    <td><span class="emoji">▶️</span>Execute</td>
+                    <td>x</td>
+                    <td>Run the file as a program</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Slide 4: Three User Groups -->
+        <div class="slide">
+            <h2>👥 Three User Groups</h2>
+            <p>Permissions are set for three types of users:</p>
+            <ul>
+                <li><strong>Owner (u)</strong> - The person who created the file</li>
+                <li><strong>Group (g)</strong> - Users in the same group</li>
+                <li><strong>Others (o)</strong> - Everyone else</li>
+            </ul>
+            <div class="visual-example">
+                <p style="font-size: 1.2em;">👤 Owner → 👥 Group → 🌍 Others</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Numeric Method -->
+        <div class="slide">
+            <h2>🔢 Numeric Method (Easy Way)</h2>
+            <p>Use numbers to set permissions:</p>
+            <table class="permission-table">
+                <tr>
+                    <th>Number</th>
+                    <th>Permission</th>
+                    <th>Calculation</th>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Read (r)</td>
+                    <td>4 + 0 + 0</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Write (w)</td>
+                    <td>0 + 2 + 0</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Execute (x)</td>
+                    <td>0 + 0 + 1</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>All (rwx)</td>
+                    <td>4 + 2 + 1</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Slide 6: Common Examples -->
+        <div class="slide">
+            <h2>💡 Common Examples</h2>
+            <div class="code-box">
+                chmod 755 script.sh
+            </div>
+            <p>Owner: read, write, execute (7)<br>
+               Group: read, execute (5)<br>
+               Others: read, execute (5)</p>
+            
+            <div class="code-box">
+                chmod 644 document.txt
+            </div>
+            <p>Owner: read, write (6)<br>
+               Group: read only (4)<br>
+               Others: read only (4)</p>
+        </div>
+
+        <!-- Slide 7: Quick Reference -->
+        <div class="slide">
+            <h2>📋 Quick Reference</h2>
+            <div class="code-box">
+                chmod 777 file → Everyone can do everything<br>
+                chmod 755 file → Owner full, others read/execute<br>
+                chmod 700 file → Only owner can access<br>
+                chmod 644 file → Owner can edit, others can read
+            </div>
+            <p style="margin-top: 30px; font-size: 1.1em;">💡 <strong>Tip:</strong> Use 755 for scripts and programs, 644 for regular files!</p>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="controls">
+            <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+            <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('total').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            if (n >= totalSlides) currentSlide = totalSlides - 1;
+            if (n < 0) currentSlide = 0;
+            
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current').textContent = currentSlide + 1;
+            
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            showSlide(currentSlide);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>
